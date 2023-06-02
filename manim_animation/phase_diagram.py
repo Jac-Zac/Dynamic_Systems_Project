@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from manim import *
 import numpy as np
 
@@ -15,12 +13,16 @@ class PhaseDiagramAnimation(Scene):
         b_tracker = ValueTracker(1)
 
         def update_phase_diagram(mob):
-            mob.clear()
+            # Remove all submobjects from the VGroup
+            for submob in mob.submobjects[:]:
+                mob.remove(submob)
+
             phase_diagram = StreamLines(
                 lambda p, t: system(p, t, a_tracker.get_value(), b_tracker.get_value()),
-                delta_x=0.5,
-                delta_y=0.5,
+                xrange=(1, 3, 0.5),
+                yrange=(1, 3, 0.5),
             )
+            # Add the new phase_diagram to the VGroup
             mob.add(phase_diagram)
 
         phase_diagram_mob = VGroup()
