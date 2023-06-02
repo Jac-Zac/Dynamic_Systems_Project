@@ -1,5 +1,5 @@
 <h1 align="center">
-    UNIVERSITY 🤖
+    Dynamic System Project 🤖
 </h1>
 
 
