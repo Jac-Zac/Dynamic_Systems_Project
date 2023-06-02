@@ -1,3 +1,5 @@
+#!/usr/bin/env manim -p -ql
+
 from manim import *
 import numpy as np
 
@@ -19,8 +21,8 @@ class PhaseDiagramAnimation(Scene):
 
             phase_diagram = StreamLines(
                 lambda p, t: system(p, t, a_tracker.get_value(), b_tracker.get_value()),
-                xrange=(1, 3, 0.5),
-                yrange=(1, 3, 0.5),
+                x_range=(1, 3, 0.5),
+                y_range=(1, 3, 0.5),
             )
             # Add the new phase_diagram to the VGroup
             mob.add(phase_diagram)
