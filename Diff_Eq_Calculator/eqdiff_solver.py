@@ -113,3 +113,32 @@ def plot_solution(f: float64(float64), x0: float64 = 0.0, dt: float64 = 0.000000
 
     # Show the plot
     plt.show()
+
+
+def plot_solution_second_order(f: Callable[[float64, float64], Tuple[float64, float64]], x0: float64 = 0.0, y0: float64 = 0.0, dt: float64 = 0.1, final_time: float64 = 10.0):
+    import matplotlib.pyplot as plt
+    # Create a grid of points in the x-y plane
+    x, y = np.meshgrid(np.arange(-10, 10, 0.5), np.arange(-10, 10, 0.5))
+
+    # Compute the derivatives of x and y at each point in the grid
+    u, v = np.zeros_like(x), np.zeros_like(y)
+    for i in range(x.shape[0]):
+        for j in range(x.shape[1]):
+            u[i,j], v[i,j] = f(x[i,j], y[i,j])
+
+    # Normalize the derivatives to get unit vectors
+    norm = np.sqrt(u**2 + v**2)
+    u = u / norm
+    v = v / norm
+
+    # Plot the direction field
+    plt.quiver(x, y, u, v, color='r')
+
+    # Set the background color to white
+    plt.gca().patch.set_facecolor('white')
+
+    # Add grid lines
+    plt.grid(True, linestyle='--', color='gray', alpha=0.5)
+
+    # Show the plot
+    plt.show()
