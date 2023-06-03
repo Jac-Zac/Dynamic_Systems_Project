@@ -3,7 +3,7 @@ from typing import Callable
 import numpy as np
 import time
 
-## In all the following function we will use just in time compilation to speed up the computation around 20 times faster
+## In all the following function we will use just in time compilation to speed up the computation easily around 20x
 
 
 # Decorato to evaluate the speed of the function
