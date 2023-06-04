@@ -6,9 +6,9 @@ from manim import *
 class VectorFieldExample(Scene):
     def construct(self):
         plane = NumberPlane(
-            x_range=[-1,5],
-            y_range=[-1,5],
-            x_length=9,
+            x_range=[0,4],
+            y_range=[0,3],
+            x_length=10,
             y_length=6,
             axis_config={"include_numbers": True},
             faded_line_ratio=4
@@ -25,7 +25,7 @@ class VectorFieldExample(Scene):
         field = ArrowVectorField(
                 diff_eq, min_color_scheme_value=2, max_color_scheme_value=10, colors=colors,
                 x_range=[plane.c2p(0,0)[0], plane.c2p(4,0)[0]],
-                y_range=[plane.c2p(0,0)[1], plane.c2p(0,4)[1]]
+                y_range=[plane.c2p(0,0)[1], plane.c2p(0,3)[1]]
                 )
 
         self.add(plane)
@@ -35,7 +35,7 @@ class VectorFieldExample(Scene):
         stream_lines = StreamLines(
                 diff_eq, stroke_width=2.5, max_anchors_per_line=30, colors=colors,
                 x_range=[plane.c2p(0,0)[0], plane.c2p(4,0)[0]],
-                y_range=[plane.c2p(0,0)[1], plane.c2p(0,4)[1]]
+                y_range=[plane.c2p(0,0)[1], plane.c2p(0,3)[1]]
                 )
 
         self.add(stream_lines)
