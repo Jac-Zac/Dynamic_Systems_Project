@@ -1,4 +1,6 @@
 from numba import njit, float64, int32
+import matplotlib.pyplot as plt
+from ipywidgets import interact, FloatSlider, IntSlider
 from typing import Callable
 import numpy as np
 import time
@@ -77,9 +79,6 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     return x
 
 
-import matplotlib.pyplot as plt
-
-
 # Function to plot the solutions
 def plot_solution(f, x0=(0.0, 0.0), dt=0.001, final_time: float64 = 1, rk_only=True):
     # Set up the plot
@@ -130,7 +129,7 @@ def plot_solution(f, x0=(0.0, 0.0), dt=0.001, final_time: float64 = 1, rk_only=T
     ax.legend()
 
     # Show the plot
-    plt.show()
+    # plt.show()
 
 
 @timer
