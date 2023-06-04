@@ -3,3 +3,4 @@
 **/*.out
 **/*.ipynb_checkpoints/
 **/manim_animation/media/
+**/venv
