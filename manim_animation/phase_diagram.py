@@ -1,7 +1,6 @@
-#!/usr/bin/env manim -p -qk
+#!/usr/bin/env manim -p -ql
 
 from manim import *
-
 
 class VectorFieldExample(Scene):
     def construct(self):
