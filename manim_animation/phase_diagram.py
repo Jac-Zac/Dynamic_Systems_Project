@@ -1,78 +1,137 @@
-#!/usr/bin/env manim -p -ql
+#!/usr/bin/env manim -p -qk
 
 from manim import *
 
+
 class VectorFieldExample(Scene):
     def construct(self):
-
         a = ValueTracker(1)
         b = ValueTracker(1)
 
+        # Define a number plane
         plane = NumberPlane(
-            x_range=[0,4],
-            y_range=[0,3],
+            # axes values
+            x_range=[-0.5, 4],
+            y_range=[-0.5, 3],
+            # size of the graph
             x_length=10,
             y_length=6,
             axis_config={"include_numbers": True},
-            faded_line_ratio=4
+            faded_line_ratio=4,
         )
 
-        diff_eq = lambda pos: np.array([
-            plane.p2c(pos)[0] * (3 - a.get_value()*plane.p2c(pos)[0] - b.get_value()*plane.p2c(pos)[1]),
-            plane.p2c(pos)[1] * (2 - plane.p2c(pos)[0] - plane.p2c(pos)[1]),
-            0
-        ])
-        colors = [PINK,BLUE_E,PURPLE_D]
-
-
-        aslider = VGroup(
-            NumberLine(x_range=[1,3,0.5],length=5, rotation=90*DEGREES).to_edge(LEFT)
+        # Define the function
+        diff_eq = lambda pos: np.array(
+            [
+                plane.p2c(pos)[0]
+                * (
+                    3
+                    - a.get_value() * plane.p2c(pos)[0]
+                    - b.get_value() * plane.p2c(pos)[1]
+                ),
+                plane.p2c(pos)[1] * (2 - plane.p2c(pos)[0] - plane.p2c(pos)[1]),
+                0,
+            ]
         )
-        aslider += Dot().set_color(RED).move_to(aslider[0].n2p(a.get_value()))
-        aslider += Text("a").next_to(aslider[0], UP)
 
-        def asliderUpdater(mobj):
-            mobj[1].move_to(mobj[0].n2p(a.get_value()))
-        aslider.add_updater(asliderUpdater)
-        self.add(aslider)
+        # Define colors
+        colors = [PINK, BLUE_E, PURPLE_D]
 
-        bslider = VGroup(
-            NumberLine(x_range=[1,3,0.5],length=5, rotation=90*DEGREES).to_edge(RIGHT)
-        )
-        bslider += Dot().set_color(BLUE).move_to(bslider[0].n2p(b.get_value()))
-        bslider += Text("b").next_to(bslider[0], UP)
 
-        def bsliderUpdater(mobj):
-            mobj[1].move_to(mobj[0].n2p(b.get_value()))
-        bslider.add_updater(bsliderUpdater)
-        self.add(bslider)
-
-        # Add vector field
-        field = always_redraw(lambda:
-            ArrowVectorField(
-                diff_eq, min_color_scheme_value=2, max_color_scheme_value=10, colors=colors,
-                x_range=[plane.c2p(0,0)[0], plane.c2p(4,0)[0]],
-                y_range=[plane.c2p(0,0)[1], plane.c2p(0,3)[1]]
+        # Define the sliders
+        a_slider = VGroup(
+            NumberLine(x_range=[1, 3, 0.25], length=5, rotation=90 * DEGREES).to_edge(
+                LEFT
             )
         )
+
+        b_slider = VGroup(
+            NumberLine(x_range=[1, 3, 0.25], length=5, rotation=90 * DEGREES).to_edge(
+                RIGHT
+            )
+        )
+
+        # Add the dot and the text near the sliders
+        a_dot = Dot().set_color(RED_E).move_to(a_slider[0].n2p(a.get_value()))
+        a_slider += a_dot
+        a_slider += Text("a").next_to(a_slider[0], UP)
+
+        b_dot = Dot().set_color(BLUE_E).move_to(b_slider[0].n2p(b.get_value()))
+        b_slider += b_dot
+        b_slider += Text("b").next_to(b_slider[0], UP)
+
+        # add the text near the dots
+        a_text = DecimalNumber(a.get_value()).add_updater(lambda v: v.next_to(a_dot, RIGHT))
+        b_text = DecimalNumber(b.get_value()).add_updater(lambda v: v.next_to(b_dot, LEFT))
+
+        # Define the updates
+        def a_sliderUpdater(mobj):
+            mobj[1].move_to(mobj[0].n2p(a.get_value()))
+
+        def b_sliderUpdater(mobj):
+            mobj[1].move_to(mobj[0].n2p(b.get_value()))
+
+        # Add the updates
+        a_slider.add_updater(a_sliderUpdater)
+        b_slider.add_updater(b_sliderUpdater)
+
+        # define a vector field
+        field = always_redraw(
+            lambda: ArrowVectorField(
+                diff_eq,
+                min_color_scheme_value=2,
+                max_color_scheme_value=10,
+                colors=colors,
+                x_range=[plane.c2p(0, 0)[0], plane.c2p(4, 0)[0]],
+                y_range=[plane.c2p(0, 0)[1], plane.c2p(0, 3)[1]],
+            )
+        )
+
+        # define streamlines
+        stream_lines = always_redraw(
+            lambda: StreamLines(
+                diff_eq,
+                stroke_width=2,
+                max_anchors_per_line=30,
+                colors=colors,
+                x_range=[plane.c2p(0, 0)[0], plane.c2p(4, 0)[0]],
+                y_range=[plane.c2p(0, 0)[1], plane.c2p(0, 3)[1]],
+            )
+        )
+
+        # add the plane
         self.add(plane)
+
+        # Draw the vector field
         self.play(*[GrowArrow(vec) for vec in field])
 
-        # Add streamlines
-        stream_lines = always_redraw(lambda:
-            StreamLines(
-                diff_eq, stroke_width=2.5, max_anchors_per_line=30, colors=colors,
-                x_range=[plane.c2p(0,0)[0], plane.c2p(4,0)[0]],
-                y_range=[plane.c2p(0,0)[1], plane.c2p(0,3)[1]]
-            )
-        )
-
+        # Add the vector field and streamlines
+        self.add(field)
         self.add(stream_lines)
 
-        stream_lines.start_animation(warm_up=True, flow_speed=1)
-        self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
+        # Add the sliders
+        self.play(Create(a_slider), run_time=1)
+        self.play(Create(b_slider), run_time=1)
 
-        self.play(a.animate.set_value(2))
+        self.play(Write(a_dot), run_time=1)
+        self.play(Write(b_dot), run_time=1)
+
+        # Create the ranges where to show a and b
+        a_range = [1.5, 2, 2.5, 3]
+        b_range = [1.5, 2, 2.5, 3]
+
         self.wait()
-        self.play(b.animate.set_value(2))
-        self.wait()
+
+        # Show in different ranges
+        for a_val, b_val in zip(a_range, b_range):
+            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
+
+        self.wait(3)
+
+        a_range = [1, 3]
+        b_range = [3, 1]
+
+        # Show in different ranges
+        for a_val, b_val in zip(a_range, b_range):
+            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
+            self.wait(3)
