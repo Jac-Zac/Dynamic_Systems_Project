@@ -59,9 +59,19 @@ class VectorFieldExample(Scene):
         b_slider += b_dot
         b_slider += Text("b").next_to(b_slider[0], UP)
 
-        # add the text near the dots
-        a_text = DecimalNumber(a.get_value()).add_updater(lambda v: v.next_to(a_dot, RIGHT))
-        b_text = DecimalNumber(b.get_value()).add_updater(lambda v: v.next_to(b_dot, LEFT))
+
+        # Create Variable objects for a and b to write the value
+        a_dot_text = Variable(a.get_value(), label="a", num_decimal_places=2)
+        b_dot_text = Variable(b.get_value(), label="b", num_decimal_places=2)
+
+        # Add next to the dots
+        a_dot_text.add_updater(lambda m: m.next_to(a_dot, RIGHT, buff=0.1))
+        b_dot_text.add_updater(lambda m: m.next_to(b_dot, RIGHT, buff=0.1))
+
+
+        # Add text to the sliders
+        a_slider += a_dot_text
+        b_slider += b_dot_text
 
         # Define the updates
         def a_sliderUpdater(mobj):
@@ -103,17 +113,18 @@ class VectorFieldExample(Scene):
 
         # Draw the vector field
         self.play(*[GrowArrow(vec) for vec in field])
+        self.play(stream_lines.create())  # uses virtual_time as run_time
+
+        # stream_lines.start_animation(warm_up=True, flow_speed=1)
+        # self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
 
         # Add the vector field and streamlines
         self.add(field)
         self.add(stream_lines)
 
         # Add the sliders
-        self.play(Create(a_slider), run_time=1)
-        self.play(Create(b_slider), run_time=1)
-
-        self.play(Write(a_dot), run_time=1)
-        self.play(Write(b_dot), run_time=1)
+        self.play(Write(a_slider), run_time=1)
+        self.play(Write(b_slider), run_time=1)
 
         # Create the ranges where to show a and b
         a_range = [1.5, 2, 2.5, 3]
@@ -123,7 +134,11 @@ class VectorFieldExample(Scene):
 
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
+            self.play(stream_lines.create())  # uses virtual_time as run_time
+            # stream_lines.start_animation(warm_up=False, flow_speed=1.5, time_width=0.5)
+#            self.add(stream_lines)
             self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
+#            self.play(stream_lines.end_animation())
 
         self.wait(3)
 
