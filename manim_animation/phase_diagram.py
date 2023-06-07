@@ -120,26 +120,33 @@ class VectorFieldExample(Scene):
         self.play(Write(a_slider), run_time=1)
         self.play(Write(b_slider), run_time=1)
 
+        # Add text for the updater
+        self.add(a_dot_text)
+        self.add(b_dot_text)
+
         # Create the ranges where to show a and b
         a_range = [1.5, 2, 2.5, 3]
         b_range = [1.5, 2, 2.5, 3]
 
+        self.play(stream_lines.create())  # uses virtual_time as run_time
+        self.add(stream_lines)
+        self.play(Uncreate(stream_lines))
         self.wait()
 
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
+            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
             self.play(stream_lines.create())  # uses virtual_time as run_time
             self.add(stream_lines)
             self.play(Uncreate(stream_lines))
-            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
 
         a_range = [1, 3]
         b_range = [3, 1]
 
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
+            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
             self.play(stream_lines.create())  # uses virtual_time as run_time
             self.add(stream_lines)
             self.play(Uncreate(stream_lines))
-            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
             self.wait(3)
