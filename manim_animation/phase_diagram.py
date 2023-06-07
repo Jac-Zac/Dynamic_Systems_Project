@@ -1,4 +1,4 @@
-#!/usr/bin/env manim -p -ql
+#!/usr/bin/env manim -p -qk
 
 from manim import *
 
@@ -59,14 +59,13 @@ class VectorFieldExample(Scene):
         b_slider += b_dot
         b_slider += Text("b").next_to(b_slider[0], UP)
 
-
-        # Create Variable objects for a and b to write the value
-        a_dot_text = Variable(a.get_value(), label="a", num_decimal_places=2)
-        b_dot_text = Variable(b.get_value(), label="b", num_decimal_places=2)
+        # Create DecimalNumber objects for a and b
+        a_dot_text = DecimalNumber(a.get_value(), num_decimal_places=2).scale(0.75)
+        b_dot_text = DecimalNumber(b.get_value(), num_decimal_places=2).scale(0.75)
 
         # Add next to the dots
         a_dot_text.add_updater(lambda m: m.next_to(a_dot, RIGHT, buff=0.1))
-        b_dot_text.add_updater(lambda m: m.next_to(b_dot, RIGHT, buff=0.1))
+        b_dot_text.add_updater(lambda m: m.next_to(b_dot, LEFT, buff=0.1))
 
 
         # Add text to the sliders
@@ -113,14 +112,9 @@ class VectorFieldExample(Scene):
 
         # Draw the vector field
         self.play(*[GrowArrow(vec) for vec in field])
-        self.play(stream_lines.create())  # uses virtual_time as run_time
-
-        # stream_lines.start_animation(warm_up=True, flow_speed=1)
-        # self.wait(stream_lines.virtual_time / stream_lines.flow_speed)
 
         # Add the vector field and streamlines
         self.add(field)
-        self.add(stream_lines)
 
         # Add the sliders
         self.play(Write(a_slider), run_time=1)
@@ -135,17 +129,17 @@ class VectorFieldExample(Scene):
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
             self.play(stream_lines.create())  # uses virtual_time as run_time
-            # stream_lines.start_animation(warm_up=False, flow_speed=1.5, time_width=0.5)
-#            self.add(stream_lines)
+            self.add(stream_lines)
+            self.play(Uncreate(stream_lines))
             self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
-#            self.play(stream_lines.end_animation())
-
-        self.wait(3)
 
         a_range = [1, 3]
         b_range = [3, 1]
 
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
+            self.play(stream_lines.create())  # uses virtual_time as run_time
+            self.add(stream_lines)
+            self.play(Uncreate(stream_lines))
             self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
             self.wait(3)
