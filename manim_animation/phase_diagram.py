@@ -67,17 +67,14 @@ class VectorFieldExample(Scene):
         a_dot_text.add_updater(lambda m: m.next_to(a_dot, RIGHT, buff=0.1))
         b_dot_text.add_updater(lambda m: m.next_to(b_dot, LEFT, buff=0.1))
 
-
-        # Add text to the sliders
-        a_slider += a_dot_text
-        b_slider += b_dot_text
-
         # Define the updates
         def a_sliderUpdater(mobj):
             mobj[1].move_to(mobj[0].n2p(a.get_value()))
+            a_dot_text.set_value(a.get_value())
 
         def b_sliderUpdater(mobj):
             mobj[1].move_to(mobj[0].n2p(b.get_value()))
+            b_dot_text.set_value(b.get_value())
 
         # Add the updates
         a_slider.add_updater(a_sliderUpdater)
@@ -120,6 +117,9 @@ class VectorFieldExample(Scene):
         self.play(Write(a_slider), run_time=1)
         self.play(Write(b_slider), run_time=1)
 
+        self.play(Write(a_dot_text))
+        self.play(Write(b_dot_text))
+
         # Add text for the updater
         self.add(a_dot_text)
         self.add(b_dot_text)
@@ -127,26 +127,28 @@ class VectorFieldExample(Scene):
         # Create the ranges where to show a and b
         a_range = [1.5, 2, 2.5, 3]
         b_range = [1.5, 2, 2.5, 3]
-
-        self.play(stream_lines.create())  # uses virtual_time as run_time
-        self.add(stream_lines)
-        self.play(Uncreate(stream_lines))
-        self.wait()
-
+        
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
-            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
-            self.play(stream_lines.create())  # uses virtual_time as run_time
+            self.play(stream_lines.create(), run_time = 0.75)  # uses virtual_time as run_time
             self.add(stream_lines)
-            self.play(Uncreate(stream_lines))
+            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
+            self.play(Uncreate(stream_lines), run_time=0.5)
+
+
+        self.play(stream_lines.create(), run_time = 0.75)
+        self.play(Uncreate(stream_lines), run_time=0.5)
 
         a_range = [1, 3]
         b_range = [3, 1]
+        self.wait(3)
 
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
-            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
-            self.play(stream_lines.create())  # uses virtual_time as run_time
+            self.play(stream_lines.create(), run_time = 0.75)
             self.add(stream_lines)
-            self.play(Uncreate(stream_lines))
-            self.wait(3)
+            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
+            self.play(Uncreate(stream_lines), run_time=0.5)
+
+        self.play(stream_lines.create(), run_time = 0.75)
+        self.play(Uncreate(stream_lines), run_time=0.5)
