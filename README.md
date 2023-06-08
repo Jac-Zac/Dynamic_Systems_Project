@@ -5,7 +5,7 @@
 
 # Motivation 💭
 
-<!-- <img href=".assets/image.jpg" src="https://github.com/Jac-Zac/University/blob/master/.assets/image.jpg?raw=true" alt="minimal" align="right" width="400px"/> -->
+<img href=".assets/numerical_showcase.gif" src="https://github.com/Jac-Zac/University/blob/master/.assets/image.jpg?raw=true" alt="minimal" align="right" width="400px"/>
 
 #### Why does this project exist ?
 > TL;DR No real reason, I like git
