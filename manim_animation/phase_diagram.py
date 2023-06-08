@@ -1,4 +1,4 @@
-#!/usr/bin/env manim -p -qk
+#!/usr/bin/env manim -p -ql
 
 from manim import *
 
@@ -130,25 +130,28 @@ class VectorFieldExample(Scene):
         
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
-            self.play(stream_lines.create(), run_time = 0.75)  # uses virtual_time as run_time
+            self.play(stream_lines.create())  # uses virtual_time as run_time
             self.add(stream_lines)
             self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
-            self.play(Uncreate(stream_lines), run_time=0.5)
+            self.play(Uncreate(stream_lines))
 
 
         self.play(stream_lines.create(), run_time = 0.75)
-        self.play(Uncreate(stream_lines), run_time=0.5)
+        self.play(FadeOut(stream_lines))
 
         a_range = [1, 3]
         b_range = [3, 1]
-        self.wait(3)
+
+        self.wait(2)
 
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
-            self.play(stream_lines.create(), run_time = 0.75)
+            self.play(stream_lines.create())
             self.add(stream_lines)
             self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
             self.play(Uncreate(stream_lines), run_time=0.5)
 
         self.play(stream_lines.create(), run_time = 0.75)
-        self.play(Uncreate(stream_lines), run_time=0.5)
+        self.play(FadeOut(stream_lines), run_time=1.5)
+
+        self.wait(2)
