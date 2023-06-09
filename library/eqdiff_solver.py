@@ -79,6 +79,26 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     # Return the final value of x
     return x
 
+@njit(cache=True)
+def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
+    """Differential equations solver using Runge-Kutta method"""
+
+    # Initialize the solution array
+    num_iterations = int32(final_time / dt)
+    num_conditions = x0_array.shape[0]
+    x = np.empty((num_conditions, num_iterations, x0_array.shape[1]))
+    x[:, 0] = x0_array
+
+    for i in range(1, num_iterations):
+        for j in range(num_conditions):
+            k1 = f(x[j, i - 1]) * dt
+            k2 = f(x[j, i - 1] + k1 / 2.0) * dt
+            k3 = f(x[j, i - 1] + k2 / 2.0) * dt
+            k4 = f(x[j, i - 1] + k3) * dt
+            x[j, i] = x[j, i - 1] + (1 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+
+    return x
+
 # Function to plot the solutions
 def plot_solution(f, x0=(0.0, 0.0), dt=0.001, final_time: float64 = 1, rk_only=True):
     # Set up the plot
@@ -211,10 +231,9 @@ def phase_diagram_trajectories(
     # Initialize an array to store the trajectories
     trajectories = []
 
-    # Solve the differential equation for each combination of x and y
-    for x0 in combinations:
-        x_traj = runge_kutta(f, np.array(x0), dt, final_time)
-        trajectories.append(x_traj)
+    # Solve the differential equation for each combination of x and y in a vectorized way
+    x0_array = np.array(combinations)
+    trajectories = vectorized_runge_kutta(f, x0_array, dt, final_time)
 
     # Set up the plot
     fig, ax = plt.subplots()
