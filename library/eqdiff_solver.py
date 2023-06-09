@@ -1,4 +1,4 @@
-from numba import njit, float64, int32
+from numba import njit, float64, int32, vectorize
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from typing import Callable
@@ -73,12 +73,12 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
         k2 = f(x[i - 1] + k1 / 2.0) * dt
         k3 = f(x[i - 1] + k2 / 2.0) * dt
         k4 = f(x[i - 1] + k3) * dt
-        x[i] = x[i - 1] + k1 / 6.0 + 2.0 * k2 + 2.0 * k3 + k4
-        x[i] = x[i - 1] + (1 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+        x[i] = x[i - 1] +  (1.0 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
     # Return the final value of x
     return x
 
+# @vectorize(['float64(float64[:], float64, float64)'])
 @njit(cache=True)
 def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
     """Differential equations solver using Runge-Kutta method"""
@@ -95,7 +95,7 @@ def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
             k2 = f(x[j, i - 1] + k1 / 2.0) * dt
             k3 = f(x[j, i - 1] + k2 / 2.0) * dt
             k4 = f(x[j, i - 1] + k3) * dt
-            x[j, i] = x[j, i - 1] + (1 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+            x[j, i] = x[j, i - 1] + (1.0 /6.0) * (k1  + 2.0 * k2 + 2.0 * k3 + k4)
 
     return x
 
