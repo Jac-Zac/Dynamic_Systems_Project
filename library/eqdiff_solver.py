@@ -1,4 +1,4 @@
-from numba import njit, float64, int32, vectorize
+from numba import njit, float64, int32,vectorize,guvectorize
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from typing import Callable
@@ -58,6 +58,7 @@ def eulero_modified(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     return x
 
 
+# @guvectorize([(float64[:, :], float64[:, :], float64, float64, float64[:, :])], '(n,m),(n,m),(),()->(n,m)', nopython=True)
 @njit(cache=True)
 def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     """Differential equations solver using Euler's method"""
@@ -78,7 +79,6 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     # Return the final value of x
     return x
 
-# @vectorize(['float64(float64[:], float64, float64)'])
 @njit(cache=True)
 def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
     """Differential equations solver using Runge-Kutta method"""
