@@ -2,6 +2,7 @@
 
 from manim import *
 
+
 class VectorFieldExample(Scene):
     def construct(self):
         a = ValueTracker(1)
@@ -35,7 +36,6 @@ class VectorFieldExample(Scene):
 
         # Define colors
         colors = [PINK, BLUE_E, PURPLE_D]
-
 
         # Define the sliders
         a_slider = VGroup(
@@ -127,14 +127,13 @@ class VectorFieldExample(Scene):
         # Create the ranges where to show a and b
         a_range = [1.5, 2, 2.5, 3]
         b_range = [1.5, 2, 2.5, 3]
-        
+
         # Show in different ranges
         for a_val, b_val in zip(a_range, b_range):
             self.play(stream_lines.create())  # uses virtual_time as run_time
             self.add(stream_lines)
-            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
+            self.play(a.animate.set_value(a_val), b.animate.set_value(b_val))
             self.play(Uncreate(stream_lines), run_time=0.5)
-
 
         a_range = [1, 3]
         b_range = [3, 1]
@@ -145,7 +144,7 @@ class VectorFieldExample(Scene):
         for a_val, b_val in zip(a_range, b_range):
             self.play(stream_lines.create())
             self.add(stream_lines)
-            self.play(a.animate.set_value(a_val),b.animate.set_value(b_val))
+            self.play(a.animate.set_value(a_val), b.animate.set_value(b_val))
             self.play(Uncreate(stream_lines), run_time=0.5)
 
         self.play(stream_lines.create())

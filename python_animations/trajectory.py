@@ -8,10 +8,10 @@ from library.eqdiff_solver import *
 from numba import njit
 import numpy as np
 
+
 # remeber that x can be multi dimensional so the function is general to n dimensino
 @njit(cache=True)
 def f(x) -> np.ndarray[float64]:
-
     # Define the value for a and b
     a = 2.0
     b = 1.0
@@ -23,7 +23,9 @@ def f(x) -> np.ndarray[float64]:
 
 
 # Function to plot the solutions
-def animated_showcase(f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 = 1, rk_only=True):
+def animated_showcase(
+    f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 = 1, rk_only=False
+):
     # Set up the plot
     fig, ax = plt.subplots()
 
@@ -44,7 +46,9 @@ def animated_showcase(f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 
 
             # Plot the trajectory for each method
             ax.plot(x_traj_euler, y_traj_euler, label="Euler")
-            ax.plot(x_traj_euler_modified, y_traj_euler_modified, label="Euler Modified")
+            ax.plot(
+                x_traj_euler_modified, y_traj_euler_modified, label="Euler Modified"
+            )
 
         # Compute trajectory
         x_runge_kutta = runge_kutta(f, x0, dt, final_time)
@@ -75,8 +79,16 @@ def animated_showcase(f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 
         ax.legend()
 
         # Add text box with dt value
-        ax.text(0.95, 0.05, "dt = {:.3f}".format(dt), transform=ax.transAxes, fontsize=10,
-                verticalalignment='bottom', horizontalalignment='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.5))
+        ax.text(
+            0.95,
+            0.05,
+            "dt = {:.3f}".format(dt),
+            transform=ax.transAxes,
+            fontsize=10,
+            verticalalignment="bottom",
+            horizontalalignment="right",
+            bbox=dict(boxstyle="round", facecolor="white", alpha=0.5),
+        )
 
     # Create the animation
     dt_values = np.linspace(0.9, 0.001, 100)
@@ -88,4 +100,5 @@ def animated_showcase(f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 
     # Show the plot
     plt.show()
 
-animated_showcase(f=f)
+
+animated_showcase(f=f, dt=0.5, final_time=10)

@@ -1,4 +1,4 @@
-from numba import njit, float64, int32,vectorize,guvectorize
+from numba import njit, float64, int32, vectorize, guvectorize
 import matplotlib.pyplot as plt
 from typing import Callable
 import numpy as np
@@ -72,10 +72,11 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
         k2 = f(x[i - 1] + k1 / 2.0) * dt
         k3 = f(x[i - 1] + k2 / 2.0) * dt
         k4 = f(x[i - 1] + k3) * dt
-        x[i] = x[i - 1] +  (1.0 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+        x[i] = x[i - 1] + (1.0 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
     # Return the final value of x
     return x
+
 
 @njit(cache=True)
 def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
@@ -93,12 +94,15 @@ def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
             k2 = f(x[j, i - 1] + k1 / 2.0) * dt
             k3 = f(x[j, i - 1] + k2 / 2.0) * dt
             k4 = f(x[j, i - 1] + k3) * dt
-            x[j, i] = x[j, i - 1] + (1.0 /6.0) * (k1  + 2.0 * k2 + 2.0 * k3 + k4)
+            x[j, i] = x[j, i - 1] + (1.0 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
     return x
 
+
 # Function to plot the solutions
-def plot_solution(f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 = 1, rk_only=True):
+def plot_solution(
+    f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 = 1, rk_only=True
+):
     # Set up the plot
     fig, ax = plt.subplots()
 
@@ -145,6 +149,7 @@ def plot_solution(f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 = 1,
 
     # Add legend
     ax.legend()
+
 
 @timer
 def phase_diagram_trajectories(
