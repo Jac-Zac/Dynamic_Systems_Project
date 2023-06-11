@@ -38,7 +38,7 @@ def update_plot(frame, a_min=1, a_max=3, b_min=1, b_max=3, size=0.1):
     # Update the text objects
     text_a.set_position((0.95, 0.95))
     text_a.set_text(f'a = {a:.2f}')
-    text_b.set_position((0.95, 0.90))
+    text_b.set_position((0.95, 0.85))
     text_b.set_text(f'b = {b:.2f}')
 
     return q, text_a, text_b
@@ -52,7 +52,7 @@ q = ax.quiver(x, y, u, v, mag, cmap='viridis')
 
 # Add text objects for a and b
 text_a = ax.text(0.95, 0.95, '', transform=ax.transAxes, fontsize=11, verticalalignment="top", horizontalalignment="right", bbox=dict(boxstyle="round", facecolor="white", alpha=0.5))
-text_b = ax.text(0.95, 0.90, '', transform=ax.transAxes, fontsize=11, verticalalignment="top", horizontalalignment="right", bbox=dict(boxstyle="round", facecolor="white", alpha=0.5))
+text_b = ax.text(0.95, 0.85, '', transform=ax.transAxes, fontsize=11, verticalalignment="top", horizontalalignment="right", bbox=dict(boxstyle="round", facecolor="white", alpha=0.5))
 
 # Add a title to the plot
 ax.set_title('Quiver Plot of Differential Equation')
