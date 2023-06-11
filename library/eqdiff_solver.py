@@ -1,8 +1,6 @@
 from numba import njit, float64, int32,vectorize,guvectorize
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 from typing import Callable
-from PIL import Image
 import numpy as np
 import time
 
@@ -100,7 +98,7 @@ def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
     return x
 
 # Function to plot the solutions
-def plot_solution(f, x0=(0.0, 0.0), dt=0.001, final_time: float64 = 1, rk_only=True):
+def plot_solution(f, x0=np.array([0.1, 0.1]), dt=0.001, final_time: float64 = 1, rk_only=True):
     # Set up the plot
     fig, ax = plt.subplots()
 
@@ -147,72 +145,6 @@ def plot_solution(f, x0=(0.0, 0.0), dt=0.001, final_time: float64 = 1, rk_only=T
 
     # Add legend
     ax.legend()
-
-# Function to plot the solutions
-def animated_showcase(f, x0=(0.0, 0.0), dt=0.001, final_time: float64 = 1, rk_only=True):
-    # Set up the plot
-    fig, ax = plt.subplots()
-
-    def update(dt):
-        ax.clear()
-
-        # Solve the differential equation using all three methods
-        if rk_only == False:
-            # Compute trajectory
-            x_euler = eulero(f, x0, dt, final_time)
-            x_euler_modified = eulero_modified(f, x0, dt, final_time)
-
-            # Extract the x and y coordinates of the trajectory
-            x_traj_euler = x_euler[:, 0]
-            y_traj_euler = x_euler[:, 1]
-            x_traj_euler_modified = x_euler_modified[:, 0]
-            y_traj_euler_modified = x_euler_modified[:, 1]
-
-            # Plot the trajectory for each method
-            ax.plot(x_traj_euler, y_traj_euler, label="Euler")
-            ax.plot(x_traj_euler_modified, y_traj_euler_modified, label="Euler Modified")
-
-        # Compute trajectory
-        x_runge_kutta = runge_kutta(f, x0, dt, final_time)
-
-        # Extract the x and y coordinates of the trajectory
-        x_traj_runge_kutta = x_runge_kutta[:, 0]
-        y_traj_runge_kutta = x_runge_kutta[:, 1]
-
-        # Plot the trajectory for Runge-Kutta
-        ax.plot(x_traj_runge_kutta, y_traj_runge_kutta, label="Runge-Kutta")
-
-        # Add labels and title
-        ax.set_xlabel("x")
-        ax.set_ylabel("y")
-        ax.set_title("Trajectory of the Differential Equation Solution")
-
-        # Set the background color to white
-        fig.patch.set_facecolor("white")
-
-        # Remove the top and right spines
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-
-        # Add grid lines
-        ax.grid(True, linestyle="--", color="gray", alpha=0.5)
-
-        # Add legend
-        ax.legend()
-
-        # Add text box with dt value
-        ax.text(0.95, 0.05, "dt = {:.3f}".format(dt), transform=ax.transAxes, fontsize=10,
-                verticalalignment='bottom', horizontalalignment='right', bbox=dict(boxstyle='round', facecolor='white', alpha=0.5))
-
-    # Create the animation
-    dt_values = np.linspace(0.9, 0.001, 100)
-    ani = FuncAnimation(fig, update, frames=dt_values, interval=100, repeat=True)
-
-    # Save the animation as a GIF using PillowWriter
-    ani.save("numerical_showcase.gif", writer="pillow", fps=12)
-
-    # Show the plot
-    plt.show()
 
 @timer
 def phase_diagram_trajectories(
