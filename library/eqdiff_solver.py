@@ -6,7 +6,6 @@ import time
 
 ## In all the following function we will use just in time compilation to speed up the computation easily around 20x
 
-
 # Decorato to evaluate the speed of the function
 def timer(func):
     "Timer decorator"
@@ -56,14 +55,13 @@ def eulero_modified(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     return x
 
 
-# @guvectorize([(float64[:, :], float64[:, :], float64, float64, float64[:, :])], '(n,m),(n,m),(),()->(n,m)', nopython=True)
 @njit(cache=True)
 def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     """Differential equations solver using Euler's method"""
 
     # Initialize the solution array
     num_iterations = int32(final_time / dt)
-    x = np.empty((num_iterations, x0.shape[0]))
+    x = np.empty(num_iterations)
     x[0] = x0
 
     # Iterate over all the elements except the first one

@@ -2,8 +2,12 @@
 
 from matplotlib.animation import FuncAnimation
 from PIL import Image
-
-from library.eqdiff_solver import *
+import sys
+ 
+# setting path
+sys.path.append('../library')
+ 
+from eqdiff_solver import *
 
 from numba import njit
 import numpy as np
