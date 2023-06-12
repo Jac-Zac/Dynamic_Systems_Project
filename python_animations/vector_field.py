@@ -4,6 +4,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from moviepy.editor import *
 from PIL import Image
 
 # setting path
@@ -38,7 +39,7 @@ def update_plot(frame, a_min=1, a_max=3, b_min=1, b_max=3, size=0.1):
     # Update the text objects
     text_a.set_position((0.95, 0.95))
     text_a.set_text(f'a = {a:.2f}')
-    text_b.set_position((0.95, 0.85))
+    text_b.set_position((0.95, 0.875))
     text_b.set_text(f'b = {b:.2f}')
 
     return q, text_a, text_b
@@ -52,7 +53,7 @@ q = ax.quiver(x, y, u, v, mag, cmap='viridis')
 
 # Add text objects for a and b
 text_a = ax.text(0.95, 0.95, '', transform=ax.transAxes, fontsize=11, verticalalignment="top", horizontalalignment="right", bbox=dict(boxstyle="round", facecolor="white", alpha=0.5))
-text_b = ax.text(0.95, 0.85, '', transform=ax.transAxes, fontsize=11, verticalalignment="top", horizontalalignment="right", bbox=dict(boxstyle="round", facecolor="white", alpha=0.5))
+text_b = ax.text(0.95, 0.875, '', transform=ax.transAxes, fontsize=11, verticalalignment="top", horizontalalignment="right", bbox=dict(boxstyle="round", facecolor="white", alpha=0.5))
 
 # Add a title to the plot
 ax.set_title('Quiver Plot of Differential Equation')
@@ -62,9 +63,24 @@ frames = 24
 
 # Create the animation
 ani = FuncAnimation(fig, update_plot, frames=frames, fargs=(1, 3, 1, 3, 0.1), interval=100, repeat=True)
+ani1 = FuncAnimation(fig, update_plot, frames=frames, fargs=(1, 1, 1, 3, 0.1), interval=100, repeat=True)
+ani2 = FuncAnimation(fig, update_plot, frames=frames, fargs=(1, 3, 1, 1, 0.1), interval=100, repeat=True)
 
 # Save the animation as a GIF using PillowWriter
-ani.save("animated_plot.gif", writer="pillow", fps=12)
+ani.save("gif1.gif", writer="pillow", fps=12)
+ani1.save("gif2.gif", writer="pillow", fps=12)
+ani2.save("gif3.gif", writer="pillow", fps=12)
+
+# Create the 3 clips
+clip1 = VideoFileClip("gif1.gif")
+clip2 = VideoFileClip("gif2.gif")
+clip3 = VideoFileClip("gif3.gif")
+
+final_clip = concatenate_videoclips([clip1, clip2, clip3])
+final_clip.write_gif("combined_animation.gif", fps=12)
 
 plt.show()
 plt.close('all')
+
+# Create png for latex
+# magick convert -coalesce combined_animation.gif combined_animation.png
