@@ -61,7 +61,7 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
 
     # Initialize the solution array
     num_iterations = int32(final_time / dt)
-    x = np.empty(num_iterations)
+    x = np.empty((num_iterations, x0.shape[0]))
     x[0] = x0
 
     # Iterate over all the elements except the first one
@@ -70,11 +70,10 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
         k2 = f(x[i - 1] + k1 / 2.0) * dt
         k3 = f(x[i - 1] + k2 / 2.0) * dt
         k4 = f(x[i - 1] + k3) * dt
-        x[i] = x[i - 1] + (1.0 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+        x[i] = x[i - 1] + (1 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
     # Return the final value of x
     return x
-
 
 @njit(cache=True)
 def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
