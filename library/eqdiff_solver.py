@@ -189,7 +189,7 @@ def phase_diagram_trajectories(
     ax.set_ylabel("y")
     ax.set_xlim(start, end)
     ax.set_ylim(start, end)
-    ax.set_title("Trajectories of the Differential Equation Solution")
+    ax.set_title(f'Trajectories of the Differential Equation, dt = {dt}')
 
     # Set the background color to white
     fig.patch.set_facecolor("white")
