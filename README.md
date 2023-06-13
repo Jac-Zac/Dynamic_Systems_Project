@@ -3,21 +3,30 @@
 </h1>
 
 
-# Motivation 💭
+# Project description
+
+#### What is inside this project ?
+> TL;DR non-linear analyses of a dynamical system
 
 <img href=".assets/numerical_showcase.gif" src="https://github.com/Jac-Zac/Dynamic_System_Project/blob/master/.assets/numerical_showcase.gif?raw=true" alt="minimal" align="right" width="400px"/>
 
-#### Why does this project exist ?
-> TL;DR No real reason, I like git
-
 <br>
 <p style="text-align:justify; line-height: 1.5;padding: 10px;">
-  The reason I created this project is mainly a practical one. Indeed pretty much everything here are exercises given to me as homework assignment and material that I might need during the current university semester.
+**In this repository you can find:**
 
-  Furthermore I often delete things I shouldn't, thus saving them here is a good idea. I have will have a table with the exercises which can be easily access and also try to have some templates
+- The [`jupyter notebook`](https://github.com/Jac-Zac/Dynamic_Systems_Project/blob/master/phase_diagram.ipynb)
+
+- The code to create the [`gif`](https://github.com/Jac-Zac/Dynamic_Systems_Project/tree/master/python_animations)
+
+- The code for the [`manim animation`](https://github.com/Jac-Zac/Dynamic_Systems_Project/tree/master/manim_animation)
+
+- The main [`library with the solvers`](https://github.com/Jac-Zac/Dynamic_Systems_Project/tree/master/library)
+
 </p>
 
 <br><br>
+
+`jupyter nbconvert --to latex --template article phase_diagram.ipynb` To convert the notebook in latex
 
 ### Resources
 

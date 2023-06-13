@@ -6,6 +6,7 @@ import time
 
 ## In all the following function we will use just in time compilation to speed up the computation easily around 20x
 
+
 # Decorato to evaluate the speed of the function
 def timer(func):
     "Timer decorator"
@@ -55,6 +56,7 @@ def eulero_modified(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     return x
 
 
+@timer
 @njit(cache=True)
 def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     """Differential equations solver using Euler's method"""
@@ -75,25 +77,6 @@ def runge_kutta(f, x0, dt=0.001, final_time=1) -> np.ndarray[float64]:
     # Return the final value of x
     return x
 
-# @njit(cache=True)
-# def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
-#     """Differential equations solver using Runge-Kutta method"""
-#
-#     # Initialize the solution array
-#     num_iterations = int32(final_time / dt)
-#     num_conditions = x0_array.shape[0]
-#     x = np.empty((num_conditions, num_iterations, x0_array.shape[1]))
-#     x[:, 0] = x0_array
-#
-#     for i in range(1, num_iterations):
-#         for j in range(num_conditions):
-#             k1 = f(x[j, i - 1]) * dt
-#             k2 = f(x[j, i - 1] + k1 / 2.0) * dt
-#             k3 = f(x[j, i - 1] + k2 / 2.0) * dt
-#             k4 = f(x[j, i - 1] + k3) * dt
-#             x[j, i] = x[j, i - 1] + (1.0 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
-#
-#     return x
 
 @njit(cache=True)
 def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
@@ -105,17 +88,13 @@ def vectorized_runge_kutta(f, x0_array, dt=0.001, final_time=1) -> np.ndarray:
     x = np.empty((num_conditions, num_iterations, x0_array.shape[1]))
     x[:, 0] = x0_array
 
-    # Define the Runge-Kutta coefficients
-    b = np.array([[0.0, 0.0, 0.0], [0.5, 0.0, 0.0], [-1.0, 2.0, 0.0]])
-    c = np.array([1.0 / 6.0, 2.0 / 3.0, 1.0 / 6.0])
-
-    # Compute the solution using the Runge-Kutta method
     for i in range(1, num_iterations):
-        k = np.zeros((num_conditions, 3, x0_array.shape[1]))
-        k[:, 0] = f(x[:, i - 1])
-        for j in range(1, 3):
-            k[:, j] = f(x[:, i - 1] + dt * np.dot(b[j - 1], k))
-        x[:, i] = x[:, i - 1] + dt * np.dot(c, k[:, 1:])
+        for j in range(num_conditions):
+            k1 = f(x[j, i - 1]) * dt
+            k2 = f(x[j, i - 1] + k1 / 2.0) * dt
+            k3 = f(x[j, i - 1] + k2 / 2.0) * dt
+            k4 = f(x[j, i - 1] + k3) * dt
+            x[j, i] = x[j, i - 1] + (1.0 / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
 
     return x
 
@@ -170,6 +149,7 @@ def plot_solution(
 
     # Add legend
     ax.legend()
+
 
 def phase_diagram_trajectories(
     f,

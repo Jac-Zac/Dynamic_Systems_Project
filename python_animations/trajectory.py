@@ -3,10 +3,10 @@
 from matplotlib.animation import FuncAnimation
 from PIL import Image
 import sys
- 
+
 # setting path
-sys.path.append('../library')
- 
+sys.path.append("../library")
+
 from eqdiff_solver import *
 
 from numba import njit
