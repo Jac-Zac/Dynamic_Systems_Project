@@ -27,8 +27,6 @@
 
 </p>
 
-<br><br>
-
 ### Resources
 
 - https://docs.manim.community/en/stable/reference/manim.mobject.vector_field.StreamLines.html
