@@ -23,8 +23,8 @@ def update_plot(frame, a_min=1, a_max=3, b_min=1, b_max=3, size=0.1):
     a = a_min + (a_max - a_min) * frame / frames
     b = b_min + (b_max - b_min) * frame / frames
 
-    # Generate some random data
-    x, y = np.meshgrid(np.arange(0, 3, size), np.arange(0, 3, size))
+    # Generate the value for the plot
+    x, y = np.meshgrid(np.linspace(0, 3, int(3/size) + 1), np.linspace(0, 3, int(3/size) + 1))
     u, v = eq_diff(x, y, a, b)
 
     # Calculate the magnitude of each vector and clip it so that we can get better coloring
@@ -49,7 +49,7 @@ def update_plot(frame, a_min=1, a_max=3, b_min=1, b_max=3, size=0.1):
 
 # Create the initial plot
 fig, ax = plt.subplots()
-x, y = np.meshgrid(np.arange(0, 3, 0.1), np.arange(0, 3, 0.1))
+x, y = np.meshgrid(np.linspace(0, 3, int(3/0.1) + 1), np.linspace(0, 3, int(3/0.1) + 1))
 u, v = eq_diff(x, y, 2, 1)
 mag = np.clip(np.sqrt(u**2 + v**2), -10, 2)
 q = ax.quiver(x, y, u, v, mag, cmap="viridis")
@@ -77,7 +77,7 @@ text_b = ax.text(
 )
 
 # Add a title to the plot
-ax.set_title("Quiver Plot of Differential Equation")
+ax.set_title("Vector Field Animated Plot")
 
 # Set the number of frames
 frames = 24
