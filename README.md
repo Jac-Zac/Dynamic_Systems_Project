@@ -22,11 +22,12 @@
 
 - The main [`library with the solvers`](https://github.com/Jac-Zac/Dynamic_Systems_Project/tree/master/library)
 
+###### To convert the notebook to latex we used:
+> `jupyter nbconvert --to latex --template article phase_diagram.ipynb`
+
 </p>
 
 <br><br>
-
-`jupyter nbconvert --to latex --template article phase_diagram.ipynb` To convert the notebook in latex
 
 ### Resources
 
